@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    script contains function to plot a histogram of the BDT output, uses the default style of ATLAS plots
+    """
+# Authors: Patrick Greenway
+
 import sys
 sys.path.append("/Users/patrickgreenway/ENV/lib/python2.7/site-packages")
 
@@ -100,25 +106,29 @@ def final_decision_plot(df, show=False, block=False, trafoD_bins = False, bin_nu
              label=legend_names[::-1],
              stacked=True,
              edgecolor='None')
+
+    df_sig = df.loc[df['Class']==1]
+    plt.hist(df_sig['bin_scaled'].tolist(),
+         bins=bins,
+         weights=(df_sig['post_fit_weight']*100).tolist(),
+         range=plot_range,
+         rwidth=1,
+         histtype = 'step',
+         linewidth=2,
+         color='#FF0000',
+         label=r'VH $\rightarrow$ Vbb x 100',
+         edgecolor='#FF0000')
+
     x1, x2, y1, y2 = plt.axis()
-#plt.yscale('log', nonposy='clip')
+    plt.yscale('log', nonposy='clip')
     plt.axis((x1, x2, y1, y2 * 1.2))
     axes = plt.gca()
-    #axes.set_ylim([5,100000])
-    axes.set_ylim([0,140])
+    axes.set_ylim([11,600000])
     axes.set_xlim([-1,1])
     x = [-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1]
     plt.xticks(x, x,fontweight = 'normal',fontsize = 16)
-    y = ["10",r"10$^{2}$",r"10$^{3}$",r"10$^{4}$",r"10$^{5}$"]
-    yi = [10,100,1000,10000,100000]
-
-    if (nJets == 2)|(nJets=='2'):
-        y = yi = [10,20,30,40,50]
-        axes.set_ylim([0,59])
-    else:
-        y = yi = [100,200,300,400]
-        axes.set_ylim([0,420])
-
+    y = [r"10$^{2}$",r"10$^{3}$",r"10$^{4}$",r"10$^{5}$"]
+    yi = [100,1000,10000,100000]
     plt.yticks(yi, y,fontweight = 'normal',fontsize = 16)
     axes.yaxis.set_ticks_position('both')
     axes.yaxis.set_tick_params(which='both', direction='in')
@@ -127,13 +137,17 @@ def final_decision_plot(df, show=False, block=False, trafoD_bins = False, bin_nu
     axes.xaxis.set_minor_locator(AutoMinorLocator(4))
     axes.yaxis.set_minor_locator(AutoMinorLocator(4))
     handles, labels = axes.get_legend_handles_labels()
+
+    #Weird hack thing to get legend entries in correct order
+    handles = handles[::-1]
+    handles = handles+handles
+    handles = handles[1:12]
     plt.legend(loc='upper right', ncol=1, prop={'size': 12},frameon=False,
-               handles=handles[::-1])
+               handles=handles)
+
     plt.ylabel("Events",fontsize = 16,fontweight='normal')
     axes.yaxis.set_label_coords(-0.07,0.93)
-    plt.xlabel(r"BDT output",fontsize = 16,fontweight='normal')
-    #plt.xlabel(r"BDT output",fontsize = 16,fontweight='normal')
-    #print "changed line"
+    plt.xlabel(r"BDT$_{VH}$ output",fontsize = 16,fontweight='normal')
     axes.xaxis.set_label_coords(0.89, -0.07)
     an1 = axes.annotate("ATLAS", xy=(0.05, 0.91), xycoords=axes.transAxes,fontstyle = 'italic',fontsize = 16)
 
@@ -145,12 +159,6 @@ def final_decision_plot(df, show=False, block=False, trafoD_bins = False, bin_nu
     
     offset_from = OffsetFrom(an3, (0, -1.6))
     an4 = axes.annotate("p$^V_T \geq$ 150 GeV", xy=(0.05,0.91), xycoords=axes.transAxes, textcoords=offset_from,fontstyle = 'italic',fontsize = 12)
-    
-    offset_from = OffsetFrom(an4, (0, -0.9))
-    an5 = axes.annotate("$m_{bb} \leq$ 75 GeV", xy=(0.05,0.91), xycoords=axes.transAxes, textcoords=offset_from,fontstyle = 'italic',fontsize = 12)
-
-    offset_from = OffsetFrom(an5, (0, -1.2))
-    an6 = axes.annotate("$m_{top} <$ 225 GeV", xy=(0.05,0.91), xycoords=axes.transAxes, textcoords=offset_from,fontstyle = 'italic',fontsize = 12)
 
     plt.show(block=block)
 

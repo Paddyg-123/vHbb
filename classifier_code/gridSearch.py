@@ -1,6 +1,6 @@
 #!/bin/python
 """
-An executable main script to classify the 2 or 3 jet dataset using the XGradient Boosted Classifier
+grid search of primary XGB variables
 """
 # Authors: Patrick Greenway
 

@@ -3,7 +3,7 @@
     A script that prepares the CSV files ready to by put into MVA
     """
 # Authors: Patrick Greenway
-# License: MIT
+
 import pandas as pd
 import numpy as np
 

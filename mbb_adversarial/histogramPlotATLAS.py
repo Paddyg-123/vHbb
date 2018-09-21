@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    script contains function to plot a histogram of the BDT output, uses the default style of ATLAS plots
+    """
+# Authors: Patrick Greenway
+
 import sys
 sys.path.append("/Users/patrickgreenway/ENV/lib/python2.7/site-packages")
 

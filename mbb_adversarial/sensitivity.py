@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    script contains functions to calculate the sensitivity metric of the classifer output
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

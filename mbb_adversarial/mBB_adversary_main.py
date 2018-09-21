@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    executable main script that produces a NN classifier thats output is indepencent of mBB
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 #from histogramPlotATLAS import *
@@ -30,8 +36,8 @@ def main():
     test  = 'even'
     
     # Prepare data
-    df_train = pd.read_csv('ADV_2jet_batch_'+train+'.csv', index_col=0)
-    df_test = pd.read_csv('ADV_2jet_batch_'+test+'.csv', index_col=0)
+    df_train = pd.read_csv('CSV/ADV_2jet_batch_'+train+'.csv', index_col=0)
+    df_test = pd.read_csv('CSV/ADV_2jet_batch_'+test+'.csv', index_col=0)
 
     #Convert mass bin number to categorical
     z_train = to_categorical(df_train['mBB_category'], num_classes=10)

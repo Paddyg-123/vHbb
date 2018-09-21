@@ -1,3 +1,10 @@
+#!/bin/python
+"""
+    executable script that plots a 2d histogram of mBB against NN output, before
+    and after adversarial training
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 import matplotlib as plt

@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    processes dataframes for use in adversarial strategy
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import scale

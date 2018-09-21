@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    A script that convertes the .root files into .csv files. 
+    """
+# Authors: Patrick Greenway
+
 import sys
 sys.path.append("/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages")
 sys.path.append("/Library/Python/2.7/site-packages")

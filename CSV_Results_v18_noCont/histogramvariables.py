@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    A script that plots and individual variable, showing signal/background seperation
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

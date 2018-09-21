@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    processes dataframes for use in adversarial strategy
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import scale
@@ -17,7 +23,7 @@ variables = variables_map[nJets]
 def main():
     
     # Prepare data
-    df = pd.read_csv('../CSV_Results_v18_normal/allVariables_'+str(nJets)+'jet_odd.csv', index_col=0)
+    df = pd.read_csv('../../CSV_Results_v18_normal/allVariables_'+str(nJets)+'jet_odd.csv', index_col=0)
     
     df['mBB_raw'] = df['mBB']
     

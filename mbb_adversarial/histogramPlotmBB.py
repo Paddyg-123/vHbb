@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    plots mBB variable
+    """
+# Authors: Patrick Greenway
+
 import sys
 sys.path.append("/Users/patrickgreenway/ENV/lib/python2.7/site-packages")
 
@@ -62,8 +68,6 @@ def decision_plot_mBB(df, show=False, block=False, trafoD_bins = False, bin_numb
     df['mBB_raw'] = mbb_vals
 
     bins = np.linspace(0,500,26)
-
-    #bins = [0, 62806.2806280628, 84008.40084008401, 98009.800980098, 108010.80108010801, 113611.3611361136, 117611.76117611761, 120812.0812081208, 123612.3612361236, 126412.6412641264, 129212.9212921292, 132013.201320132, 136013.601360136, 143614.3614361436, 178417.8417841784, 282828.2828282828, 376437.6437643764, 446044.60446044605, 547654.7654765476, 698069.806980698, 4005000]
     # Initialise plot stuff
     plt.ion()
     plt.close("all")
@@ -165,4 +169,105 @@ def decision_plot_mBB(df, show=False, block=False, trafoD_bins = False, bin_numb
 
 
     plt.show(block=block)
+
+def plotVariables(df, variable,bins,plot_range):
+    
+    #bins = np.linspace(min(df[variable]), max(df[variable]),16)
+    
+    # Initialise plot stuff
+    plt.ion()
+    plt.clf()
+    #plot_range = (min(df[variable]), max(df[variable]))
+    plot_data = []
+    plot_weights = []
+    plot_colors = []
+    plt.rc('font', weight='bold')
+    plt.rc('xtick.major', size=5, pad=7)
+    plt.rc('xtick', labelsize=10)
+    
+    plt.rcParams["font.weight"] = "bold"
+    plt.rcParams["axes.labelweight"] = "bold"
+    plt.rcParams["mathtext.default"] = "regular"
+    
+    df_signal = df.loc[df['Class'] ==1.0]
+    df_background = df.loc[df['Class'] ==0.0]
+    
+    plot_weights_signal = df_signal['post_fit_weight']
+    plot_weights_signal = (1/sum(plot_weights_signal))*plot_weights_signal
+    
+    plot_weights_background = df_background['post_fit_weight']
+    plot_weights_background = (1/sum(plot_weights_background))*plot_weights_background
+    
+    variable_values_signal = df_signal[variable]
+    variable_values_background = df_background[variable]
+    
+    plot_weights.append(plot_weights_signal.tolist())
+    plot_weights.append(plot_weights_background.tolist())
+    
+    plot_data.append(variable_values_signal.tolist())
+    plot_data.append(variable_values_background.tolist())
+    
+    plot_colors.append('#FF0000')
+    plot_colors.append('#0066CC')
+    
+    class_names = ['Background','Signal']
+    
+    # Plot.
+    plt.hist(variable_values_signal,
+             bins=bins,
+             weights=plot_weights_signal,
+             range=plot_range,
+             rwidth=1,
+             color='#FF0000',
+             edgecolor='red',
+             label='Signal',
+             stacked=False,
+             alpha=0.5,
+             hatch=4*'\\')
+     plt.hist(variable_values_background,
+              bins=bins,
+              weights=plot_weights_background,
+              range=plot_range,
+              rwidth=1,
+              color='#0066CC',
+              edgecolor='blue',
+              label='Background',
+              alpha=0.5,
+              hatch=4*'//')
+     x1, x2, y1, y2 = plt.axis()
+     #plt.yscale('log', nonposy='clip')
+     plt.axis((x1, x2, y1, y2 * 1.2))
+     axes = plt.gca()
+     axes.set_ylim([0,0.2])
+     #axes.set_xlim(plot_range)
+     x = [-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1]
+     #plt.xticks(x, x,fontweight = 'normal',fontsize = 16)
+     y = ["10",r"10$^{2}$",r"10$^{3}$",r"10$^{4}$",r"10$^{5}$"]
+     yi = [10,100,1000,10000,100000]
+     #plt.yticks(yi, y,fontweight = 'normal',fontsize = 16)
+     axes.yaxis.set_ticks_position('both')
+     axes.yaxis.set_tick_params(which='both', direction='in')
+     axes.xaxis.set_ticks_position('both')
+     axes.xaxis.set_tick_params(which='both', direction='in')
+     axes.xaxis.set_minor_locator(AutoMinorLocator(4))
+     handles, labels = axes.get_legend_handles_labels()
+     plt.legend(loc='upper right', ncol=1, prop={'size': 12},frameon=False,
+                handles=handles[::-1])
+     plt.ylabel('Normalised Number of Events',fontsize = 16,fontweight='normal')
+     axes.yaxis.set_label_coords(-0.1,0.5)
+     plt.xlabel(variable,fontsize = 16,fontweight='normal')
+     axes.xaxis.set_label_coords(0.89, -0.07)
+     an1 = axes.annotate("ATLAS", xy=(0.05, 0.91), xycoords=axes.transAxes,fontstyle = 'italic',fontsize = 16)
+     
+     offset_from = OffsetFrom(an1, (0, -1.4))
+     an2 = axes.annotate(r'$\sqrt{s}$' + " = 13 TeV , 36.1 fb$^{-1}$", xy=(0.05,0.91), xycoords=axes.transAxes, textcoords=offset_from, fontweight='normal',fontsize = 12)
+     
+     offset_from = OffsetFrom(an2, (0, -1.4))
+     an3 = axes.annotate("1 lepton, "+str(nJets)+" jets, 2 b-tags", xy=(0.05,0.91), xycoords=axes.transAxes, textcoords=offset_from,fontstyle = 'italic',fontsize = 12)
+     
+     offset_from = OffsetFrom(an3, (0, -1.6))
+     an4 = axes.annotate("p$^V_T \geq$ 150 GeV", xy=(0.05,0.91), xycoords=axes.transAxes, textcoords=offset_from,fontstyle = 'italic',fontsize = 12)
+     plt.savefig("final"+str(nJets)+'jets_'+ variable + '.png', bbox_inches='tight')
+     plt.show(block=True)
+
 

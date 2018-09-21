@@ -1,11 +1,12 @@
 #!/bin/python
 """
-An executable main script to classify the 2 or 3 jet dataset using the XGradient Boosted Classifier
+An executable main script to that isolate a specific region of face space and rich in a specific background type
+
 """
 # Authors: Patrick Greenway
 
-from control_purity_new import *
-from finalHistogramPlot_ttbar import *
+from control_purity import *
+from finalHistogramPlot import *
 from xgboost import XGBClassifier
 
 variables_map = {

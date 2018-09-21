@@ -1,3 +1,9 @@
+#!/bin/python
+"""
+    executable script performs cuts on the NN output, and calculates sensitivity
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 import matplotlib as plt

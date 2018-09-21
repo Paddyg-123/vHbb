@@ -1,3 +1,10 @@
+#!/bin/python
+"""
+  plots the BDT output of the control regions
+    
+    """
+# Authors: Patrick Greenway
+
 import sys
 sys.path.append("/Users/patrickgreenway/ENV/lib/python2.7/site-packages")
 

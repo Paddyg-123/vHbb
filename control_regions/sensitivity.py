@@ -7,7 +7,7 @@ from sklearn.preprocessing import scale
 from datetime import datetime
 
 def calc_sensitivity_with_error(df):
-    """Calculate sensitivity from dataframe with error"""
+    """Calculate sensitivity metric from dataframe with error"""
     
     bins, bin_sums_w2_s, bin_sums_w2_b = trafoD_with_error(df)
     

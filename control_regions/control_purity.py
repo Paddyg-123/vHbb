@@ -1,3 +1,10 @@
+#!/bin/python
+"""
+    script calcualtes the bin purity of the bdt output of the control regions
+    
+    """
+# Authors: Patrick Greenway
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,7 +13,10 @@ import math
 from sklearn.preprocessing import scale
 from datetime import datetime
 
-def calc_bin_purity(df,numberOfBins = 3):
+
+
+
+def calc_bin_purity(df,bins,noBins):
     """Calculate sensitivity from dataframe with error"""
     
     bins, bin_sums_w2_s, bin_sums_w2_b = trafoD_with_error(df)
@@ -37,15 +47,14 @@ def calc_bin_purity(df,numberOfBins = 3):
     # Zip up S, B, DS and DB per bin.
     s_stack = counts_sb[0][::-1]   #counts height of signal in each bin from +1 to -1
     b_stack = counts_sb[1][::-1]    #counts height of bkground in each bin from +1 to -1
-    ds_sq_stack = bin_sums_w2_s[::-1]
-    db_sq_stack = bin_sums_w2_b[::-1]
     
     purity = []
+    noOfEvents = []
     
-    for s, b, ds_sq, db_sq in zip(s_stack[0:numberOfBins], b_stack[0:numberOfBins], ds_sq_stack[0:numberOfBins], db_sq_stack[0:numberOfBins]): #iterates through
-        purity.append(s/(s+b))
-    
-    return purity
+    for s, b in zip(s_stack[0:noBins], b_stack[0:noBins]): #iterates through
+        purity.append(100*s/(s+b))
+        noOfEvents.append(s+b)
+    return purity,noOfEvents
 
 
 def trafoD_with_error(df, initial_bins=1000, z_s=10, z_b=10): #total number of bins = z_s + z_b
